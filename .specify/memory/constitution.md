@@ -1,50 +1,67 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+同步影响报告
+版本变更：未发布（初始化模板）→ 1.0.0
+原则变更：首次确立无障碍优先、核心逻辑独立、可验收的用户行为、自动化测试、简单实现、中文优先。
+新增章节内容：平台与工具链、开发与验收、治理。
+移除章节：无。
+后续待办：无。
+-->
+
+# Pomodoro Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### 一、无障碍优先
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+主要操作和关键流程必须支持纯键盘完成。交互控件必须具有合理的焦点顺序、可见的焦点指示、
+可读的无障碍名称，以及与其用途相符的角色和状态。影响焦点、控件语义或重要状态提示的变更，
+必须在 Windows 上使用键盘和 NVDA 验证，确认用户能识别控件并获取完成操作所需的反馈。
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### 二、核心逻辑独立于界面
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+番茄计时规则和阶段切换等核心逻辑必须能在无需创建 Qt 窗口或启动 Qt 事件循环的情况下测试。
+界面负责接收输入和呈现状态。需要依赖时间的核心测试必须能控制时间输入，避免实际等待计时结束。
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### 三、用户可观察的行为必须可验收
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+新增或改变用户可观察的行为前，必须在需求中记录触发条件、预期结果和可检查的验收标准。
+验收标准必须覆盖受影响的正常流程，以及适用的边界、异常和无障碍场景。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### 四、自动化测试覆盖核心逻辑与关键交互
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+核心逻辑必须使用 pytest 测试，关键 Qt 界面交互必须使用 pytest-qt 测试。
+测试必须断言业务结果或用户可观察的状态，覆盖相关的正常路径与边界条件。
+修复核心逻辑或关键交互的缺陷时，必须有能检出该缺陷的回归测试。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### 五、保持实现简单
+
+实现必须以已确认的需求为范围，优先复用能满足需求的现有代码。
+新增抽象、依赖或扩展点时，必须能指出其解决的当前问题。
+
+### 六、中文优先
+
+项目文档、用户界面文案和面向用户的提示必须默认使用简体中文。
+代码标识符、命令、路径、工具名称和需要准确保留的技术术语沿用原文。
+
+## 平台与工具链
+
+- 应用运行于 Windows 桌面。项目的 Python 开发基线为 3.13，最低版本要求沿用
+  `pyproject.toml` 中的 `>=3.13`。图形界面使用 PySide6。
+- 使用 uv 管理项目环境和依赖，使用 pytest 与 pytest-qt 运行测试，使用 Ruff 检查代码。
+  依赖及构建约束以 `pyproject.toml` 为准。
+- 项目开发环境为 Windows Terminal、PowerShell 和 VS Code。项目文档中的 Windows 开发命令使用 PowerShell 语法。
+
+## 开发与验收
+
+- 需求与计划必须写明受影响的用户行为、验收标准和验证方式。
+- 代码变更提交审查前，必须运行适用的自动化测试与 Ruff 检查。涉及第一条规定的变更时，
+  必须记录 Windows 上的键盘和 NVDA 验证结果。
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- 本章程适用于项目需求、设计、实现和审查。变更审查必须核对适用的原则及验收证据。
+- 修订时必须记录变更内容、理由和影响，由项目维护者审阅批准，并更新版本与最近修订日期。
+- 章程版本采用语义化版本。移除或重新定义原则等不兼容变更提升主版本，
+  新增原则或章节以及实质扩充规则提升次版本，纯文字澄清和勘误提升修订版本。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-11-20 | **Last Amended**: 2026-11-20
